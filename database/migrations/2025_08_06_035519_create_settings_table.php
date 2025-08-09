@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('key')->unique();
             $table->string('group')->default('general'); // e.g., string, integer, boolean, etc.
+            $table->string('type')->default('string'); // e.g., string, integer, boolean, etc.
             $table->string('value')->nullable();
             $table->timestamps();
         });

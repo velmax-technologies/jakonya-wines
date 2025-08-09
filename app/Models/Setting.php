@@ -9,13 +9,26 @@ class Setting extends Model
     protected $fillable = [
         'key',
         'group',
+        'type',
         'value',
     ];
 
      public function getValueAttribute($value)
     {
-        if($this->key === 'payment_methods') {
-            return json_decode($value, true); // Cast to array if 'type' is 'array'
+        if($this->type === 'json') {
+            return json_decode($value, true); 
+        }
+        if($this->type === 'boolean') {
+            return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        }
+        if($this->type === 'integer') {
+            return (int) $value;
+        }
+        if($this->type === 'float') {
+            return (float) $value;
+        }
+        if($this->type === 'string') {
+            return (string) $value;
         }
        
         return $value; // Return original value if no specific cast is needed

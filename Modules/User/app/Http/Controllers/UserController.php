@@ -124,8 +124,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
 
-        return response()->json([]);
+            activity('user deleted')->causedBy(Auth::user())->log('User ' . Auth::user()->username . ' deleted user: ' . $user->username);
+
+            return (new UserResource($user))->additional($this->preparedResponse('destroy'));
+
+        } catch (ModelNotFoundException $modelException) {
+            return $this->recordNotFoundResponse($modelException);
+        } catch (QueryException $queryException) {
+            return $this->queryExceptionResponse($queryException);
+        }
     }
 }

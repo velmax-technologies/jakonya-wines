@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('veltech'),
                 'is_super_admin' => true,
             ]);
-        }
+         }
 
         $saUser->assignRole('super admin');
         $adminUser->assignRole('admin');

@@ -4,5 +4,8 @@
     "Activity": true,
     "Role": true,
     "Permission": true,
-    "Setting": true
+    "Setting": true,
+    "Supplier": true,
+    "Item": true,
+    "FileManager": true
 }
