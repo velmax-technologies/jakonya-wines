@@ -54,6 +54,12 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Purchase::class);
     }
 
+    // stock adjustments
+    public function stock_adjustments()
+    {
+        return $this->hasMany(StockAdjustment::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

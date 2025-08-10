@@ -8,5 +8,7 @@
     "Supplier": true,
     "Item": true,
     "FileManager": true,
-    "Purchase": true
+    "Purchase": true,
+    "StockAdjustment": true,
+    "Sale": true
 }

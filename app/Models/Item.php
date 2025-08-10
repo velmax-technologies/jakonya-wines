@@ -6,6 +6,7 @@ use Spatie\Tags\HasTags;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Item extends Model
 {
@@ -45,6 +46,24 @@ class Item extends Model
         return $this->hasMany(Stock::class);
     }
 
+    // stock adjustments
+    public function stock_adjustments()
+    {
+        return $this->hasMany(StockAdjustment::class);
+    }
+
+    // addition stock adjustments
+    public function addition_stock_adjustments()
+    {
+        return $this->hasMany(StockAdjustment::class)->where('type', 'addition');
+    }
+
+    // subtraction stock adjustments
+    public function subtraction_stock_adjustments()
+    {
+        return $this->hasMany(StockAdjustment::class)->where('type', 'subtraction');
+    }
+
     // costs
     public function costs()
     {
@@ -57,5 +76,15 @@ class Item extends Model
         return $this->hasMany(ItemPrice::class);
     }
 
-    // 
+    // item sales
+    public function item_sale(): HasOne
+    {
+        return $this->hasOne(ItemSale::class);
+    }
+
+    // item return
+    public function item_return(): HasOne
+    {
+        return $this->hasOne(ItemReturn::class);
+    }
 }
