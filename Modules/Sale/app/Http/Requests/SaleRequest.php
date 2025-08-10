@@ -11,7 +11,18 @@ class SaleRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        $rules = [];
+
+        if ($this->isMethod('post')) {
+            $rules = [
+                'item_id' => 'required|exists:items,id',
+                'quantity' => 'required|integer|min:1',
+                'price' => 'required|numeric|min:0',
+                'user_id' => 'required|exists:users,id',
+            ];
+        }
+
+        return $rules;
     }
 
     /**
