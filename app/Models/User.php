@@ -48,6 +48,12 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
+    // purchases
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

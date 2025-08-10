@@ -87,11 +87,10 @@ class ItemController extends Controller
             ->setStatusCode(Response::HTTP_CREATED);   
         } catch (\Exception $e) {
             DB::rollBack();
-            return $this->errorResponse(
-                Messages::ERROR_OCCURRED,
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                $e->getMessage()
-            );
+            return response([
+                'message' => $e->getMessage(),
+                'status' => 'failed'
+            ], 400);
         } 
     }
 

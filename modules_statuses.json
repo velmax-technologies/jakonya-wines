@@ -7,5 +7,6 @@
     "Setting": true,
     "Supplier": true,
     "Item": true,
-    "FileManager": true
+    "FileManager": true,
+    "Purchase": true
 }

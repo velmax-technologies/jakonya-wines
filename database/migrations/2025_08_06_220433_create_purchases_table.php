@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Assuming purchases are linked to users
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
             $table->date('purchase_date')->nallable();
             $table->decimal('total_amount', 10, 2)->default(0);
-            $table->string('invoice_number')->unique()->nullable();
+            $table->string('invoice_number')->nullable();
             $table->text('notes')->nullable();
             $table->boolean('is_paid')->default(false);
             $table->decimal('paid_amount', 10, 2)->default(0);

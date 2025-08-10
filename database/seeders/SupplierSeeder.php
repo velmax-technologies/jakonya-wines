@@ -16,5 +16,9 @@ class SupplierSeeder extends Seeder
         Supplier::create([
             'name' => 'TB Distributors',
         ]);
+
+        Supplier::create([
+            'name' => 'Ogembo Distributors',
+        ]);
     }
 }
