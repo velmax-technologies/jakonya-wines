@@ -20,13 +20,13 @@ class LoginResource extends JsonResource
             'response' => [
                 'status'      => ApiStatus::SUCCESS,
                 'status_code' => Response::HTTP_OK,
-                'message'     => Messages::LOGIN_SUCCESSFUL,
-                'data' => [
-                    'token_type'   => 'bearer',
-                    'access_token' => $this->resource,
-                    'expires_in'   => JWTAuth::factory()->getTTL() * 60
-                ],
-            ]
+                'message'     => Messages::LOGIN_SUCCESSFUL, 
+            ],
+            'data' => [
+                'token_type'   => 'bearer',
+                'access_token' => $this->resource,
+                'expires_in'   => JWTAuth::factory()->getTTL() * 60
+            ],
         ];
     }
 

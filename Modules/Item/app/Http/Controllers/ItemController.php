@@ -7,8 +7,10 @@ use App\Enums\Messages;
 use App\Enums\ApiStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseFormatTrait;
+use Modules\Item\Http\Requests\ItemRequest;
 use Modules\Item\Transformers\ItemResource;
 
 class ItemController extends Controller
@@ -26,18 +28,72 @@ class ItemController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('item::create');
-    }
+   
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(ItemRequest $request) {
+        $request->validated();
+
+        DB::beginTransaction();
+        try {
+        $item = Item::create($request->all());
+
+        // Attach tags if provided
+        if ($request->has('tags')) {
+            $tags = array_filter(array_map('trim',  $request->input('tags')));
+            $item->syncTagsWithType($tags, 'itemTag');
+        }
+
+       
+
+        // stock
+        if( $request->has('qty')) {
+            $stock = $item->stocks()->create([
+                'quantity' => $request->input('qty'),
+                'note' => $request->input('note', 'initial stock'),
+            ]);
+
+            // stock cost
+            if ($request->has('cost')) {
+                $item->costs()->create([
+                    'cost' => $request->input('cost'),
+                    'stock_id' => $stock->id,
+                ]);
+            }
+
+            // retail price
+            if ($request->has('retail') && !empty($request->input('retail'))) {
+                $item->item_prices()->create([
+                    'price' => $request->input('retail'),
+                ])->attachTag('retail', 'priceTag');
+            }
+
+            // wholesale price
+            if ($request->has('wholesale') && !empty($request->input('wholesale'))) {
+                $item->item_prices()->create([
+                    'price' => $request->input('wholesale'),
+                ])->attachTag('wholesale', 'priceTag');
+            }
+        }
+
+        
+
+        DB::commit();
+        return (new ItemResource($item))
+            ->additional($this->preparedResponse('store'))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);   
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse(
+                Messages::ERROR_OCCURRED,
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $e->getMessage()
+            );
+        } 
+    }
 
     /**
      * Show the specified resource.

@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Spatie\Tags\HasTags;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ItemCost extends Model
 {
     use HasTags;
+    use LogsActivity;
 
     protected $fillable = [
         'item_id',
@@ -16,4 +19,13 @@ class ItemCost extends Model
     ];
 
     
+    // logging
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->useLogName('item_cost')
+            ->dontSubmitEmptyLogs();
+        // Chain fluent methods for configuration options
+    }
 }

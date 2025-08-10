@@ -28,4 +28,5 @@ class Messages
     const NOT_ACCEPTABLE_MSG  = "Response format not acceptable";
     const TOO_MANY_ATTEMPT = "Too Many Requests";
     const DUPLICATE_ENTRY_MSG = "Duplicate entry - The resource already exists.";
+    const ERROR_OCCURRED = "An error occurred while processing your request.";
 }

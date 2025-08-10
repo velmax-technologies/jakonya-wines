@@ -69,19 +69,19 @@ class ItemImport implements ToModel, WithSkipDuplicates, WithHeadingRow
                 ]
             );
 
-            // log item import action
-            activity()
-                ->performedOn($item)
-                ->causedBy(Auth::user())
-                ->withProperties(['action' => 'import'])
-                ->log('Item updated');
+            // // log item import action
+            // activity()
+            //     ->performedOn($item)
+            //     ->causedBy(Auth::user())
+            //     ->withProperties(['action' => 'import'])
+            //     ->log('Item updated');
 
             // log stock import action
-            activity()
-                ->performedOn($itemStock)
-                ->causedBy(Auth::user())
-                ->withProperties(['action' => 'import'])
-                ->log('stock updated');
+            // activity()
+            //     ->performedOn($itemStock)
+            //     ->causedBy(Auth::user())
+            //     ->withProperties(['action' => 'import'])
+            //     ->log('stock updated');
 
             // wholesale price tag
             if (isset($row['wholesale']) && !empty($row['wholesale'])) {

@@ -15,6 +15,7 @@ class ItemResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'qty' => $this->stocks->sum('quantity') ?? 0,
             'cost' => $this->costs()->latest()->first()->cost ?? 0,
             'wholesale_price' => $this->item_prices()->withAnyTags(['wholesale'], 'priceTag')->latest()->first()->price ?? 0,
             'retail_price' => $this->item_prices()->withAnyTags(['retail'], 'priceTag')->latest()->first()->price ?? 0,

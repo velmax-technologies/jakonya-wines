@@ -52,7 +52,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return LogOptions::defaults()
         ->logFillable()
-        ->useLogName('system')
+        ->useLogName('user')
         ->dontSubmitEmptyLogs();
         //->logOnly(['name', 'username', 'email', 'phone', 'is_active']);
         // Chain fluent methods for configuration options
