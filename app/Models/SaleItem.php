@@ -10,11 +10,14 @@ class SaleItem extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'sale_id',
         'item_id',
+        'price',
         'quantity',
-       
+        'line_total',
     ];
 
+    
 
     // relationships
     public function item()

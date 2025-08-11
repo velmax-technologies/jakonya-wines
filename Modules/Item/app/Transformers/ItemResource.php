@@ -15,7 +15,8 @@ class ItemResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'qty' => $this->stocks->sum('quantity') + $this->addition_stock_adjustments->sum('quantity') + ($this->item_return->quantity ?? 0) - $this->subtraction_stock_adjustments->sum('quantity') - ($this->item_sale->quantity ?? 0) ?? 0,
+            //'qty' => $this->stocks->sum('quantity') + $this->addition_stock_adjustments->sum('quantity') + ($this->item_return->quantity ?? 0) - $this->subtraction_stock_adjustments->sum('quantity') - ($this->item_sale->quantity ?? 0) ?? 0,
+            'quantity' => $this->available_quantity, // Use the accessor for available quantity
             'cost' => $this->costs()->latest()->first()->cost ?? 0,
             'wholesale_price' => $this->item_prices()->withAnyTags(['wholesale'], 'priceTag')->latest()->first()->price ?? 0,
             'retail_price' => $this->item_prices()->withAnyTags(['retail'], 'priceTag')->latest()->first()->price ?? 0,
@@ -23,3 +24,4 @@ class ItemResource extends JsonResource
         ];
     }
 }
+

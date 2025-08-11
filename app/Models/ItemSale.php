@@ -30,6 +30,7 @@ class ItemSale extends Model
         return $this->belongsTo(Sale::class);
     }
 
+ 
     /**
      * Get the total price formatted.
      */
