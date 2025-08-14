@@ -33,32 +33,19 @@ class PurchaseController extends Controller
     public function store(PurchaseRequest $request)
     {
         $request->validated();
-
        
         try {
             DB::beginTransaction();
+
             $user = User::find(Auth::id());
+
             $purchase = $user->purchases()->create($request->all());
 
             // Attach items if provided
             if ($request->has('purchase_items')) {
                 $purchase->purchase_items()->createMany($request->purchase_items);
 
-                // supplier cost
-                // foreach ($purchase->purchase_items as $purchaseItem) {
-                //     // stock
-
-
-                //     ItemCost::updateOrCreate(
-                //         [
-                //             'item_id' => $purchaseItem['item_id'],
-                //             'supplier_id' => $purchase->supplier_id, 
-                //         ],
-                //         [
-                //             'cost' => $purchaseItem['cost'],
-                //         ]
-                //     );
-                // }
+                
             }
 
             
@@ -94,10 +81,7 @@ class PurchaseController extends Controller
             DB::beginTransaction();
             $purchase = Purchase::findOrFail($id);
             if($purchase->status == 'completed') {
-                return response()->json([
-                    'message' => 'Cannot update a completed purchase.',
-                    'status' => 'failed'
-                ], 400);
+                return $this->errorResponse("Can not update a completed purchase", 400, null);
             }
 
             $purchase->update($request->all());
@@ -137,8 +121,10 @@ class PurchaseController extends Controller
                             'quantity' => $purchaseItem->quantity
                         ]
                     );
+                    
                     $stock->increment('quantity', $purchaseItem->quantity);
 
+                    // Update item cost
                     ItemCost::updateOrCreate(
                         [
                             'item_id' => $purchaseItem->item_id,
@@ -150,7 +136,6 @@ class PurchaseController extends Controller
                     );
 
                 }
-
                  
             }
 
@@ -158,10 +143,7 @@ class PurchaseController extends Controller
             return (new PurchaseResource($purchase))->additional($this->preparedResponse('update'));
         } catch (\Exception $e) {
             DB::rollBack();
-            return response([
-                'message' => $e->getMessage(),
-                'status' => 'failed'
-            ], 400);
+            return $this->errorResponse($e->getMessage(), 400, null);
         }
     }
 
@@ -188,10 +170,7 @@ class PurchaseController extends Controller
             
         } catch (\Exception $e) {
             DB::rollBack();
-            return response([
-                'message' => $e->getMessage(),
-                'status' => 'failed'
-            ], 400);
+            return $this->errorResponse($e->getMessage(), 400, null);
         }
     }
 }

@@ -10,5 +10,6 @@
     "FileManager": true,
     "Purchase": true,
     "StockAdjustment": true,
-    "Sale": true
+    "Sale": true,
+    "Report": true
 }

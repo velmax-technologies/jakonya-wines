@@ -17,6 +17,7 @@ class Sale extends Model
         'total_amount',
         'sold_at',
         'note',
+        'status'
     ];
 
     // user relationship
